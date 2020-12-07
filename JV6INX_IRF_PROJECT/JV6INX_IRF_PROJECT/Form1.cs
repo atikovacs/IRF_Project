@@ -15,6 +15,18 @@ namespace JV6INX_IRF_PROJECT
         public Form1()
         {
             InitializeComponent();
+
+            /*BackColor = Color.White;
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Valuta valutabtn = new Valuta();
+                    valutabtn.Top = 70+i * 35;
+                    valutabtn.Left = (this.ClientSize.Width / 2) - 188 + j * 75;
+                    this.Controls.Add(valutabtn);
+                }
+            }*/
         }
     }
 }

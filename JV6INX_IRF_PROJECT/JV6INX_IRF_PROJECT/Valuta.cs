@@ -13,11 +13,26 @@ namespace JV6INX_IRF_PROJECT
     {
         public Valuta()
         {
-            /*BackColor = Color.DarkBlue;
-            Height = 30;
-            Width = 70;
+            BackColor = Color.DarkBlue;
+            Height = 50;
+            Width = 125;
             ForeColor = Color.White;
-            Text = "AAAAAA";*/
+            Font = new Font("Times New Roman", 12);
+            Text = "EUR";
+            MouseHover += Valuta_MouseHover;
+            MouseLeave += Valuta_MouseLeave;
+        }
+
+        private void Valuta_MouseLeave(object sender, EventArgs e)
+        {
+            BackColor = Color.DarkBlue;
+            Font = new Font("Times New Roman", 12);
+        }
+
+        private void Valuta_MouseHover(object sender, EventArgs e)
+        {
+            BackColor = Color.Blue;
+            Font = new Font("Times New Roman", 15, FontStyle.Bold);
         }
     }
 }

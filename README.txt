@@ -1,3 +1,3 @@
 Projektfunkciók:
 
-MNB SOAP webservice-ére csatlakozva kiválasztva egy valutát megtekinthető annak árfolyama más valutákkal szemben
+MNB SOAP webservice-ére csatlakozva kiválasztva egy valutát lementhető egy csv fájl formájában a más valutákkal szembeni árfolyama

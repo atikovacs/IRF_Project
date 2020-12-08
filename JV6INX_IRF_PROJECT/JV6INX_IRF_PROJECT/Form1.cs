@@ -17,7 +17,7 @@ namespace JV6INX_IRF_PROJECT
             InitializeComponent();
 
             BackColor = Color.White;
-            /*for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
@@ -26,7 +26,7 @@ namespace JV6INX_IRF_PROJECT
                     valutabtn.Left = (this.ClientSize.Width / 2) - 313 + j * 125;
                     this.Controls.Add(valutabtn);
                 }
-            }*/
+            }
         }
     }
 }

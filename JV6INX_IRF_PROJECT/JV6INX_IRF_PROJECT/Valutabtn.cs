@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace JV6INX_IRF_PROJECT
 {
-    public class Valuta : Button
+    public class Valutabtn : Button
     {
-        public Valuta()
+        public Valutabtn()
         {
             BackColor = Color.DarkBlue;
             Height = 50;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JV6INX_IRF_PROJECT.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace JV6INX_IRF_PROJECT
 {
     public partial class Form1 : Form
     {
+        BindingList<Valuta> Currencies;
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +30,7 @@ namespace JV6INX_IRF_PROJECT
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Valuta valutabtn = new Valuta();
+                    Valutabtn valutabtn = new Valutabtn();
                     valutabtn.Top = 80 + i * 55;
                     valutabtn.Left = (this.ClientSize.Width / 2) - 313 + j * 125;
                     this.Controls.Add(valutabtn);
@@ -46,7 +48,7 @@ namespace JV6INX_IRF_PROJECT
             forraslbl.Left = (this.ClientSize.Width / 2) - 200;
             forraslbl.Anchor = (AnchorStyles.Bottom);
             forraslbl.ForeColor = Color.DarkBlue;
-            forraslbl.Font = new Font("Times New Roman", 8);
+            forraslbl.Font = new Font("Times New Roman", 8 , FontStyle.Italic);
             this.Controls.Add(forraslbl);
         }
 

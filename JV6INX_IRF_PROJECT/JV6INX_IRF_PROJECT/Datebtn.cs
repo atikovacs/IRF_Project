@@ -9,16 +9,15 @@ using System.Windows.Forms;
 
 namespace JV6INX_IRF_PROJECT
 {
-    public class Valutabtn : Button
+    public class Datebtn : Button
     {
-        public Valutabtn()
+        public Datebtn()
         {
             BackColor = Color.DarkBlue;
             Height = 50;
             Width = 125;
             ForeColor = Color.White;
             Font = new Font("Times New Roman", 12);
-            Text = "EUR";
             MouseHover += Valuta_MouseHover;
             MouseLeave += Valuta_MouseLeave;
         }

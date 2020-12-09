@@ -27,7 +27,7 @@ namespace JV6INX_IRF_PROJECT
 
             BackColor = Color.White;
             /*System.DateTime date1 = new System.DateTime(2020, 11, 09, 11, 03);
-            System.DateTime date2 = new System.DateTime(2020, 12, 09, 11, 03);
+            //System.DateTime date2 = new System.DateTime(2020, 12, 09, 11, 03);
             System.TimeSpan diff1 = date2.Subtract(date1);
             MessageBox.Show(diff1.ToString("yyyy-MM-dd"))*/
             int szamlalo = 29;

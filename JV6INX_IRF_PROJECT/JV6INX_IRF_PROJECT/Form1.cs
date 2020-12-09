@@ -9,12 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace JV6INX_IRF_PROJECT
 {
     public partial class Form1 : Form
     {
-        BindingList<Valuta> Currencies;
+        BindingList<Valuta> Arfolyamok = new BindingList<Valuta>();
         public Form1()
         {
             InitializeComponent();
@@ -25,11 +26,10 @@ namespace JV6INX_IRF_PROJECT
 
             Createforraslbl();
 
+            GER();
+
             BackColor = Color.White;
-            /*System.DateTime date1 = new System.DateTime(2020, 11, 09, 11, 03);
-            //System.DateTime date2 = new System.DateTime(2020, 12, 09, 11, 03);
-            System.TimeSpan diff1 = date2.Subtract(date1);
-            MessageBox.Show(diff1.ToString("yyyy-MM-dd"))*/
+            
             int szamlalo = 29;
 
             for (int i = 0; i < 5; i++)
@@ -39,15 +39,25 @@ namespace JV6INX_IRF_PROJECT
                     Datebtn datebtn = new Datebtn();
                     datebtn.Top = 80 + i * 55;
                     datebtn.Left = (this.ClientSize.Width / 2) - 375 + j * 125;
+
                     DateTime datum = DateTime.Today;
                     datum = datum.AddDays(-szamlalo);
                     datebtn.Text = datum.ToString("yyyy-MM-dd");
+                    
+
+                    //var eredmeny = from x in Arfolyamok where x.Date.Year==datum.Year && x.Date.Month==datum.Month && x.Date.Day==datum.Day select new {x.Currency, x.Value };
+
                     szamlalo = szamlalo - 1;
 
                     this.Controls.Add(datebtn);
                 }
             }
 
+            
+        }
+
+        private void GER()
+        {
             var mnbService = new MNBArfolyamServiceSoapClient();
 
             var request = new GetExchangeRatesRequestBody()
@@ -59,6 +69,27 @@ namespace JV6INX_IRF_PROJECT
             var response = mnbService.GetExchangeRates(request);
 
             var result = response.GetExchangeRatesResult;
+
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                var valuta = new Valuta();
+                Arfolyamok.Add(valuta);
+
+                valuta.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
+                valuta.Currency = childElement.GetAttribute("curr");
+
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                var value = decimal.Parse(childElement.InnerText);
+                if (unit != 0)
+                    valuta.Value = value / unit;
+            }
         }
 
         private void Createforraslbl()

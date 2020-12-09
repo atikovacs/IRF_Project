@@ -8,6 +8,7 @@ namespace JV6INX_IRF_PROJECT.Entities
 {
     public class Valuta
     {
+        public DateTime Date { get; set; }
         public string Currency { get; set; }
         public decimal Value { get; set; }
     }

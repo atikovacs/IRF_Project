@@ -1,3 +1,3 @@
 Projektfunkciók:
 
-MNB SOAP webservice-ére csatlakozva kiválasztva egy valutát lementhető egy csv fájl formájában a más valutákkal szembeni árfolyama
+MNB SOAP webservice-ére csatlakozva megjelenik az előző 30 nap, és rákkatintva egy dátumra lementhetőek egy csv fájlba az aznapi árfolyamok

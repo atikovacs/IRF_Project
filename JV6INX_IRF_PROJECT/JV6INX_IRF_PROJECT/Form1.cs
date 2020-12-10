@@ -43,8 +43,8 @@ namespace JV6INX_IRF_PROJECT
                     DateTime datum = DateTime.Today;
                     datum = datum.AddDays(-szamlalo);
                     datebtn.Text = datum.ToString("yyyy-MM-dd");
-                    
 
+                    datebtn.Click += Datebtn_Click;
                     //var eredmeny = from x in Arfolyamok where x.Date.Year==datum.Year && x.Date.Month==datum.Month && x.Date.Day==datum.Day select new {x.Currency, x.Value };
 
                     szamlalo = szamlalo - 1;
@@ -54,6 +54,15 @@ namespace JV6INX_IRF_PROJECT
             }
 
             
+        }
+
+        void Datebtn_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            var date=Convert.ToDateTime(button.Text);
+            MessageBox.Show(date.ToString());
+
+            var eredmeny = from x in Arfolyamok where x.Date.Year==date.Year && x.Date.Month==date.Month && x.Date.Day==date.Day select new {x.Currency, x.Value };
         }
 
         private void GER()

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,6 @@ namespace JV6INX_IRF_PROJECT
                     datebtn.Text = datum.ToString("yyyy-MM-dd");
 
                     datebtn.Click += Datebtn_Click;
-                    //var eredmeny = from x in Arfolyamok where x.Date.Year==datum.Year && x.Date.Month==datum.Month && x.Date.Day==datum.Day select new {x.Currency, x.Value };
 
                     szamlalo = szamlalo - 1;
 
@@ -60,9 +60,29 @@ namespace JV6INX_IRF_PROJECT
         {
             Button button = sender as Button;
             var date=Convert.ToDateTime(button.Text);
-            MessageBox.Show(date.ToString());
+            //MessageBox.Show(date.ToString());
 
             var eredmeny = from x in Arfolyamok where x.Date.Year==date.Year && x.Date.Month==date.Month && x.Date.Day==date.Day select new {x.Currency, x.Value };
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            {
+                StreamWriter sw = new StreamWriter(sfd.FileName, true, Encoding.UTF8);
+                foreach (var x in eredmeny)
+                {
+                    sw.Write(x.Currency);
+                    sw.Write(x.Value);
+                    sw.WriteLine();
+                }
+
+                /*foreach(var x in Arfolyamok)
+                {
+                    sw.Write(x.Currency);
+                    sw.Write(x.Value);
+                    sw.WriteLine();
+                }*/
+                sw.Close();
+            }
         }
 
         private void GER()

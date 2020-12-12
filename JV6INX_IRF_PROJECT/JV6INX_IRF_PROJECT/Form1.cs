@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+//using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,17 +18,23 @@ namespace JV6INX_IRF_PROJECT
     public partial class Form1 : Form
     {
         BindingList<Valuta> Arfolyamok = new BindingList<Valuta>();
+
+        List<string> cv = new List<string>
+        { "EUR", "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK",
+          "GBP", "HKD", "HRK", "IDR", "ILS", "INR", "ISK", "JPY", "KRW",
+          "MXN",  "MYR", "NOK", "NZD", "PHP", "PLN", "RON", "RSD", "RUB",
+          "SEK", "SGD", "THB", "TRY", "UAH", "USD", "ZAR"};
         public Form1()
         {
             InitializeComponent();
+
+            GER();
 
             Createcimlbl();
 
             Createmagyarazatlbl();
 
             Createforraslbl();
-
-            GER();
 
             BackColor = Color.White;
             
@@ -52,36 +59,32 @@ namespace JV6INX_IRF_PROJECT
                     this.Controls.Add(datebtn);
                 }
             }
-
             
         }
 
         void Datebtn_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
-            var date=Convert.ToDateTime(button.Text);
-            //MessageBox.Show(date.ToString());
-
-            var eredmeny = from x in Arfolyamok where x.Date.Year==date.Year && x.Date.Month==date.Month && x.Date.Day==date.Day select new {x.Currency, x.Value };
+            var date = Convert.ToDateTime(button.Text);
+            
+            var eredmeny = from x in Arfolyamok where x.Date.Year == date.Year && x.Date.Month == date.Month && x.Date.Day == date.Day select new { x.Currency, x.Value };
 
             SaveFileDialog sfd = new SaveFileDialog();
             if (sfd.ShowDialog() != DialogResult.OK) return;
             {
                 StreamWriter sw = new StreamWriter(sfd.FileName, true, Encoding.UTF8);
-                foreach (var x in eredmeny)
                 {
-                    sw.Write(x.Currency);
-                    sw.Write(x.Value);
-                    sw.WriteLine();
-                }
+                    foreach (var x in eredmeny)
+                    {
+                        sw.Write(x.Currency);
+                        sw.Write(";");
+                        sw.Write(x.Value.ToString());
+                        sw.Write(";");
+                        sw.WriteLine();
+                    }
 
-                /*foreach(var x in Arfolyamok)
-                {
-                    sw.Write(x.Currency);
-                    sw.Write(x.Value);
-                    sw.WriteLine();
-                }*/
-                sw.Close();
+                    sw.Close();
+                }
             }
         }
 
@@ -89,35 +92,41 @@ namespace JV6INX_IRF_PROJECT
         {
             var mnbService = new MNBArfolyamServiceSoapClient();
 
-            var request = new GetExchangeRatesRequestBody()
+            foreach (var item in cv)
             {
-                startDate = DateTime.Today.AddDays(-29).ToString("yyyy-MM-dd"),
-                endDate = DateTime.Today.ToString("yyyy-MM-dd")
-            };
+                var request = new GetExchangeRatesRequestBody()
+                {
+                    currencyNames = item,
+                    startDate = DateTime.Today.AddDays(-29).ToString("yyyy-MM-dd"),
+                    endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                };
 
-            var response = mnbService.GetExchangeRates(request);
 
-            var result = response.GetExchangeRatesResult;
 
-            var xml = new XmlDocument();
-            xml.LoadXml(result);
+                var response = mnbService.GetExchangeRates(request);
 
-            foreach (XmlElement element in xml.DocumentElement)
-            {
-                var valuta = new Valuta();
-                Arfolyamok.Add(valuta);
+                var result = response.GetExchangeRatesResult;
 
-                valuta.Date = DateTime.Parse(element.GetAttribute("date"));
+                var xml = new XmlDocument();
+                xml.LoadXml(result);
 
-                var childElement = (XmlElement)element.ChildNodes[0];
-                if (childElement == null)
-                    continue;
-                valuta.Currency = childElement.GetAttribute("curr");
+                foreach (XmlElement element in xml.DocumentElement)
+                {
+                    var valuta = new Valuta();
+                    Arfolyamok.Add(valuta);
 
-                var unit = decimal.Parse(childElement.GetAttribute("unit"));
-                var value = decimal.Parse(childElement.InnerText);
-                if (unit != 0)
-                    valuta.Value = value / unit;
+                    valuta.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                    var childElement = (XmlElement)element.ChildNodes[0];
+                    if (childElement == null)
+                        continue;
+                    valuta.Currency = childElement.GetAttribute("curr");
+
+                    var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                    var value = decimal.Parse(childElement.InnerText);
+                    if (unit != 0)
+                        valuta.Value = value / unit;
+                }
             }
         }
 
